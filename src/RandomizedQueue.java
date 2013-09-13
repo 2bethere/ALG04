@@ -47,6 +47,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     {
         if (isEmpty()) throw new NoSuchElementException("Queue underflow");
         int random = (first+StdRandom.uniform(N)) % q.length;
+        //do a switch with first and remove the first
+        Item temp = q[first];
+        q[first] = q[random];
+        q[random] = temp;
+        //
         Item item = q[first];
         q[first] = null;                            // to avoid loitering
         N--;
@@ -75,12 +80,22 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         private Item[] p;
         public ArrayIterator()
         {
-            p =  (Item[]) new Object[N];
-            
-           for (int t = 0; t < N; t++) {
-            p[t] = q[t];
+            Item temp;
+            p =  (Item[]) new Object[q.length];
+            int random;
+            //duplicate queue into p first
+            for (int t = 0; t < q.length; t++) {
+                p[t] = q[t];
             }
-            StdRandom.shuffle(p);
+            //now implement shuffle
+            for (int t = 0; t < N; t++) {
+                random =  (StdRandom.uniform(N-t) + first) % p.length;
+                temp = p[random];
+                p[random] = p[(first+t) % p.length];
+                p[(first+t) % p.length] = temp;
+            }
+            
+            
         }
         
         public boolean hasNext()  { return i < N;                               }
@@ -88,19 +103,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
-            Item item = p[(i + first) % p.length];
+            Item item = p[(first+i) % p.length];
             i++;
             return item;
         }
     }
     public static void main(String[] args) {
      RandomizedQueue<String> q = new RandomizedQueue<String>();
-        while (!StdIn.isEmpty()) {
-            String item = StdIn.readString();
-            if (!item.equals("-")) q.enqueue(item);
-            else if (!q.isEmpty()) StdOut.print(q.dequeue() + " ");
-        }
-        StdOut.println("(" + q.size() + " left on queue)");
+     q.enqueue("string 1");
+     q.enqueue("string 2");
+     q.enqueue("string 3");
+     q.enqueue("string 4");
+     q.enqueue("string 5");
+     for (String s:q)
+         StdOut.println(s+" | (" + q.size() + " left on queue)");
+     StdOut.println("--------------Dequeu-----------");
+     q.dequeue();
+     for (String s:q)
+        StdOut.println(s+" | (" + q.size() + " left on queue)");
     }
 
 }
