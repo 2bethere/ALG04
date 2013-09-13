@@ -12,7 +12,7 @@ public class Deque<Item> implements Iterable<Item> {
         public NodeIterator(Deque<Item> qInput)
         {
             q = qInput;
-            current = q.tail;
+            current = q.head;
         
         }
         
@@ -26,7 +26,7 @@ public class Deque<Item> implements Iterable<Item> {
             if (current == null)
                 throw new java.util.NoSuchElementException();
           Node<Item> obj = current;
-          current = current.getNext();
+          current = current.getPrev();
           return (Item) obj.getObject();
         }
        
@@ -140,10 +140,15 @@ public class Deque<Item> implements Iterable<Item> {
             tail.setPrev(null);
             head.setNext(null); 
             tail = null;
+            head = null;
+            nodeCount = 0;
         }
-        head = head.getPrev();
-        head.setNext(null);
-        nodeCount--;
+        else
+        {
+            head = head.getPrev();
+            head.setNext(null);
+            nodeCount--;
+        }
         return n.getObject();
     }
     
@@ -157,11 +162,15 @@ public class Deque<Item> implements Iterable<Item> {
             tail.setPrev(null);
             head.setNext(null);
             head = null;
+            tail = null;
+            nodeCount = 0;
         }
-        
-        tail = tail.getNext();
-        tail.setPrev(null);
-        nodeCount--;        
+        else
+        {
+            tail = tail.getNext();
+            tail.setPrev(null);
+            nodeCount--;
+        }
         return n.getObject();
     }
     // return an iterator over items in order from front to end
@@ -173,27 +182,18 @@ public class Deque<Item> implements Iterable<Item> {
     //Testing function
     public static void main(String[] args)
     {
-        Deque<String> queue = new Deque<String>();        
-        queue.addFirst("string1");
-        queue.addFirst("string2");
-        queue.addFirst("string3");
-        queue.addFirst("string4");
-        
-        queue.addFirst("string5");
-        queue.addFirst("string6");
-        
-        queue.addFirst("string7");
-        queue.addFirst("string8");
-        
-        
-        queue.removeFirst();
-        queue.removeLast();
-        
-        Iterator<String> i = queue.iterator();
-        while (i.hasNext()) {
-           String s = i.next();
-           StdOut.println(s);
+        Deque<String> queue = new Deque<String>();
+        for (int i = 0; i < 10; i++)
+        {
+           queue.addFirst("string"+i);
         }
+                
+        
+        for (String i1 : queue)
+            StdOut.println("i1 = " + i1);
+        for (String i2 : queue)
+            StdOut.println("i2 = " + i2);
+        
         StdOut.println("t");
     }
 }
