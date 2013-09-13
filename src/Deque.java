@@ -179,22 +179,6 @@ public class Deque<Item> implements Iterable<Item> {
         return new NodeIterator(this);
     }
     
-    //Testing function
-    public static void main(String[] args)
-    {
-        Deque<String> queue = new Deque<String>();
-        for (int i = 0; i < 10; i++)
-        {
-           queue.addFirst("string"+i);
-        }
-                
-        
-        for (String i1 : queue)
-            StdOut.println("i1 = " + i1);
-        for (String i2 : queue)
-            StdOut.println("i2 = " + i2);
-        
-        StdOut.println("t");
-    }
+
 }
 

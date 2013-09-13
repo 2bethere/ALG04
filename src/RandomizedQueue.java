@@ -81,18 +81,18 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         public ArrayIterator()
         {
             Item temp;
-            p =  (Item[]) new Object[q.length];
+            p =  (Item[]) new Object[N];
             int random;
             //duplicate queue into p first
-            for (int t = 0; t < q.length; t++) {
-                p[t] = q[t];
+            for (int t = 0; t < N; t++) {
+                p[t] = q[(first + t) % q.length];
             }
             //now implement shuffle
             for (int t = 0; t < N; t++) {
-                random =  (StdRandom.uniform(N-t) + first) % p.length;
+                random =  StdRandom.uniform(t+1);
                 temp = p[random];
-                p[random] = p[(first+t) % p.length];
-                p[(first+t) % p.length] = temp;
+                p[random] = p[t];
+                p[t] = temp;
             }
             
             
@@ -103,24 +103,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
-            Item item = p[(first+i) % p.length];
+            Item item = p[i];
             i++;
             return item;
         }
     }
-    public static void main(String[] args) {
-     RandomizedQueue<String> q = new RandomizedQueue<String>();
-     q.enqueue("string 1");
-     q.enqueue("string 2");
-     q.enqueue("string 3");
-     q.enqueue("string 4");
-     q.enqueue("string 5");
-     for (String s:q)
-         StdOut.println(s+" | (" + q.size() + " left on queue)");
-     StdOut.println("--------------Dequeu-----------");
-     q.dequeue();
-     for (String s:q)
-        StdOut.println(s+" | (" + q.size() + " left on queue)");
-    }
+  
 
 }
