@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Collections;
 
 public class Fast {
    public static void main(String[] args)
@@ -24,88 +23,57 @@ public class Fast {
       
        
        //////////////////////////////////////////////////
-       int searchToken;
-       //Arrays.sort(points, Collections.reverseOrder());
-       //Arrays.sort(points);
+       
        for (int p = 0; p < N; p++)
        {
+           //Step 1: Sort
            Arrays.sort(points, p + 1, N, points[p].SLOPE_ORDER);
-           //
-           searchToken = 1;
-           /*
-           for (int i = 0; i < N; i++)
+           //Step 2: Look for longest chain
+           for (int t = 0; t < N; t++)
            {
-               StdOut.println( "points["+i+"] "+points[i].toString()); 
+               StdOut.print(points[t].toString());
            }
-           */
-           for (int i = p + 2; i < N; ++i)
+           StdOut.print("\n");
+           int index1, index2;
+           index1 = p + 1;
+           index2 = p + 2;
+           
+           while (index2 < N -1)
            {
-               
-               /*StdOut.println(points[p].toString() + "Checking..."+i+"|"+points[i] + "-" + points[i-1].toString());
-               StdOut.println("Slope 1:"+points[p].slopeTo(points[i])+" Slope 2:"+points[p].slopeTo(points[i-1]));
-               */
-               if (points[p].slopeTo(points[i]) 
-                       == points[p].slopeTo(points[i-1]))
+           StdOut.println("Searching... index1:"+index1+" index2:"+index2);   
+           while (points[p].slopeTo(points[index1]) 
+                   == points[p].slopeTo(points[index2]) && index2 < N - 1)
+           {
+               index2++;
+               StdOut.println("Equal:" + index2);
+           }
+           if ((index2 - index1) >= 3)
+           {
+               int searchToken = index2-index1;
+            // Construct buffer
+               Point[] outputBuffer = new Point[searchToken + 1];
+               outputBuffer[0] = points[p];
+               int outCount = searchToken;
+               while (index1 < index2)
                {
-                   searchToken++;
-                   //StdOut.println("<-------"+searchToken);
-                   if (i == (N-1))
-                   {
-                       if (searchToken >= 3)
-                       {
-                           // Construct buffer
-                           Point[] outputBuffer = new Point[searchToken + 1];
-                           outputBuffer[0] = points[p];
-                           int outCount = searchToken;
-                           while (searchToken > 0)
-                           {
-                               outputBuffer[searchToken] = points[i-searchToken];
-                               searchToken--;
-                           }
-                           // sort
-                           Arrays.sort(outputBuffer);
-                           for (int o = 0; o < outCount; o++)
-                           {
-                               StdOut.print(outputBuffer[o].toString() + "->");
-                           }
-                           StdOut.print(
-                       outputBuffer[outCount].toString() + "\n");
-                           outputBuffer[0].drawTo(outputBuffer[outCount]);
-                           
-                       }
-                       searchToken = 1;
-                   }
+                   outputBuffer[searchToken - (index2-index1)+1] = points[index1];
+                   index1++;
                }
-               else
+               // sort
+               Arrays.sort(outputBuffer);
+               for (int o = 0; o < outCount; o++)
                {
-                   //StdOut.println("------->"+searchToken);
-                   if (searchToken >= 3)
-                   {
-                       // Construct buffer
-                       Point[] outputBuffer = new Point[searchToken + 1];
-                       outputBuffer[0] = points[p];
-                       int outCount = searchToken;
-                       while (searchToken > 0)
-                       {
-                           outputBuffer[searchToken] = points[i-searchToken];
-                           searchToken--;
-                       }
-                       // sort
-                       Arrays.sort(outputBuffer);
-                       for (int o = 0; o < outCount; o++)
-                       {
-                           StdOut.print(outputBuffer[o].toString() + "->");
-                       }
-                       StdOut.print(
-                   outputBuffer[outCount].toString() + "\n");
-                       outputBuffer[0].drawTo(outputBuffer[outCount]);
-                       
-                   }
-                   searchToken = 1;
+                   StdOut.print(outputBuffer[o].toString() + "->");
                }
+               StdOut.print(
+           outputBuffer[outCount].toString() + "\n");
+               outputBuffer[0].drawTo(outputBuffer[outCount]);
+           }
+           index1 = index2;
            
            }
        }
+           
        //////////////////////////////////////////////////
        // display to screen all at once
        StdDraw.show(0);
