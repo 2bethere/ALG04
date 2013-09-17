@@ -32,15 +32,18 @@ public class Fast {
            Arrays.sort(points, p + 1, N, points[p].SLOPE_ORDER);
            //
            searchToken = 1;
+           /*
            for (int i = 0; i < N; i++)
            {
                StdOut.println( "points["+i+"] "+points[i].toString()); 
            }
+           */
            for (int i = p + 2; i < N; ++i)
            {
                
-               StdOut.println(points[p].toString() + "Checking..."+i+"|"+points[i] + "-" + points[i-1].toString());
+               /*StdOut.println(points[p].toString() + "Checking..."+i+"|"+points[i] + "-" + points[i-1].toString());
                StdOut.println("Slope 1:"+points[p].slopeTo(points[i])+" Slope 2:"+points[p].slopeTo(points[i-1]));
+               */
                if (points[p].slopeTo(points[i]) 
                        == points[p].slopeTo(points[i-1]))
                {
@@ -66,7 +69,8 @@ public class Fast {
                                StdOut.print(outputBuffer[o].toString() + "->");
                            }
                            StdOut.print(
-                       outputBuffer[outCount].toString() + "\n");                       
+                       outputBuffer[outCount].toString() + "\n");
+                           outputBuffer[0].drawTo(outputBuffer[outCount]);
                            
                        }
                        searchToken = 1;
@@ -94,7 +98,7 @@ public class Fast {
                        }
                        StdOut.print(
                    outputBuffer[outCount].toString() + "\n");
-                       outputBuffer[0].drawTo(outputBuffer[searchToken]);
+                       outputBuffer[0].drawTo(outputBuffer[outCount]);
                        
                    }
                    searchToken = 1;
